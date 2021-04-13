@@ -1,47 +1,58 @@
-var numberOfCriteria = 4;
+// get input value
+var getValue = function(eID) {
+  return parseInt(document.getElementById(eID).value);
+}
 
-// min/max value for password length
-var getMinMax = function(isMin) {
-  var minMax = "maximum";
-  if (isMin) { minMax = "minimum"; }
-  var value = parseInt(window.prompt("Input " + minMax + " length"));
-  if (!value) { //incorrect input
-    window.alert("Only input a number. Try again.");
-    return getMinMax(isMin);
-  }
-  return value;
+// get checkbox value
+var getCheckboxValue = function(eID) {
+  return document.getElementById(eID).checked;
+}
+
+// return number of selected criteria
+var getNumberOfCriteria = function() {
+  var uppercaseConfirm = getCheckboxValue("uppercaseConfirm");
+  var lowercaseConfirm = getCheckboxValue("lowercaseConfirm");
+  var numericConfirm = getCheckboxValue("numericConfirm");
+  var specialCharacterConfirm = getCheckboxValue("specialCharacterConfirm");
+  var n = 0;
+
+  if (uppercaseConfirm) { n++; }
+  if (lowercaseConfirm) { n++; }
+  if (numericConfirm) { n++; }
+  if (specialCharacterConfirm) { n++; }
+
+  return n;
 }
 
 // ask the user to input a minimum (>= numberOfCriteria) and maximum length
 // return password length between min and max (both included)
 var getPasswordLength = function() {
-  var minValue = 0;
-  var maxValue = 0;
+  var minValue = getValue("minLength");
+  var maxValue = getValue("maxLength");
+  var numberOfCriteria = getNumberOfCriteria();
   var passwordLength = 0;
 
-  window.alert("Input the length of the password.");
-  minValue = getMinMax(true);
-  while (minValue < numberOfCriteria) {
-    window.alert(
-      "Minimum length must be greater than or equal to " + numberOfCriteria + ".\n" +
-      "Try again."
-    );
-    minValue = getMinMax(true);
+  // no input
+  if (!minValue || !maxValue) {
+    document.getElementById("errorMessage").innerHTML +=
+    "<p>Input min/max length.</p>";
+    return;
   }
-  console.log(minValue);
 
-  maxValue = getMinMax(false);
-  while (maxValue < minValue) {
-    window.alert(
-      "Maximum length must be greater than or equal to minimum length.\n" +
-      "Minimum length is " + minValue + ".\n" +
-      "Try again."
-      );
-    maxValue = getMinMax(false);
+  if (minValue < numberOfCriteria) {
+    console.log("min < nCriteria");
+    document.getElementById("errorMessage").innerHTML +=
+    "<p>Minimum length must be greater than or equal to " + numberOfCriteria + ".</p>";
+    return;
   }
-  console.log(maxValue);
+
+  if (maxValue < minValue) {
+    document.getElementById("errorMessage").innerHTML +=
+    "<p>Maximum length must be greater than or equal to " + minValue + ".</p>";
+    return;
+  }
+
   passwordLength = Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
-  console.log(passwordLength);
   return passwordLength;
 }
 
@@ -66,15 +77,15 @@ var getRandomPasswordArray = function(passwordLength) {
   var existIndex = [];
 
   // ask the user to select the criteria
-  var uppercaseConfirm = window.confirm("Include uppercase letter?");
-  var lowercaseConfirm = window.confirm("Include lowercase letter?");
-  var numericConfirm = window.confirm("Include numeric?");
-  var specialCharacterConfirm = window.confirm("Include special characters?");
+  var uppercaseConfirm = getCheckboxValue("uppercaseConfirm");
+  var lowercaseConfirm = getCheckboxValue("lowercaseConfirm");
+  var numericConfirm = getCheckboxValue("numericConfirm");
+  var specialCharacterConfirm = getCheckboxValue("specialCharacterConfirm");
 
   // no criteria was selected -> need to select at least one criteria
   if (!uppercaseConfirm && !lowercaseConfirm && !numericConfirm && !specialCharacterConfirm) {
-    window.alert("Must select at least one criteria.");
-    return getRandomPasswordArray(passwordLength);
+    document.getElementById("errorMessage").innerHTML += "<p>Must select at least one criteria.</p>";
+    return;
   }
 
   // at least one criteria was selected
@@ -116,39 +127,51 @@ var getRandomPasswordArray = function(passwordLength) {
 // return the generated password based on input length and selected criteria
 var generatePassword = function() {
 
-  // general info
-  window.alert(
-    "Select password criteria:\n\n" +
-    "First, you get a prompt to choose the min/max length of the password.\n" +
-    "The min value must be greater than or equal to " + numberOfCriteria + ".\n" +
-    "The max value must be greater than or equal to min value.\n\n" +
-    "Next, you select to include at least one of a series of characters - uppercase, lowercase, numeric, and/or special characters."
-    );
-
   // password length
   var passwordLength = getPasswordLength();
+  if (!passwordLength) {
+    return;
+  } else { // no error, show the lenght of the password
+    document.getElementById("info").innerHTML +=
+    "<p>Password length is " + passwordLength + ".</p>";
+  }
 
   // get random password array
   var randomPasswordArray = getRandomPasswordArray(passwordLength);
+  if (!randomPasswordArray) {
+    return;
+  }
 
   // generate password
   var password = "";
   for (var i = 0; i < passwordLength; i++) {
     password += randomPasswordArray[i].charAt(Math.floor(Math.random() * randomPasswordArray[i].length));
   }
+
   return password;
 }
 
 // Get references to the #generate element
-var generateBtn = document.querySelector("#generate");
+var generateBtn = document.getElementById("generate");
 
 // Write password to the #password input
 function writePassword() {
+
+  // clear error message and info
+  document.getElementById("errorMessage").innerHTML = "";
+  document.getElementById("info").innerHTML = "";
+
+  // generate password and write it out
   var password = generatePassword();
-  var passwordText = document.querySelector("#password");
 
-  passwordText.value = password;
+  var passwordText = document.getElementById("password");
 
+  // if no error -> output the password
+  if (!document.getElementById("errorMessage").innerHTML) {
+    passwordText.value = password;
+  } else {
+    passwordText.value = "";
+  }
 }
 
 // Add event listener to generate button

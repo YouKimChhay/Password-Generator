@@ -16,6 +16,30 @@
         <div class="card-header">
           <h2>Generate a Password</h2>
         </div>
+        <div class="generalInfo">
+          <p>Input the minimum and maximum length of the password.</p>
+          <p>The min value must be greater than or equal to 4.</p>
+          <p>The max value must be greater than or equal to the min value.</p>
+          <p>Must select at least one criteria - uppercase, lowercase, numeric, and/or special characters.</p>
+        </div>
+        <div class="criteria">
+          <form>
+            <label for="minLength">Input minimum length</label>
+            <input type="number" id="minLength" placeholder="minimum length" />
+            <label for="maxLength">Input maximum length</label>
+            <input type="number" id="maxLength" placeholder="maximum length" />
+            <input type="checkbox" name="uppercaseConfirm" id="uppercaseConfirm" />
+            <label for="uppercaseConfirm">Include uppercase letter</label>
+            <input type="checkbox" name="lowercaseConfirm" id="lowercaseConfirm" />
+            <label for="lowercaseConfirm">Include lowercase letter</label>
+            <input type="checkbox" name="numericConfirm" id="numericConfirm" />
+            <label for="numericConfirm">Include numeric</label>
+            <input type="checkbox" name="specialCharacterConfirm" id="specialCharacterConfirm" />
+            <label for="specialCharacterConfirm">Include special character</label>
+          </form>
+        </div>
+        <div id="errorMessage"></div>
+        <div id="info"></div>
         <div class="card-body">
           <textarea
             readonly
