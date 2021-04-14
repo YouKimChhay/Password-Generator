@@ -10,4 +10,7 @@ To generate a password based on selected criteria:
 * CSS
 * JS
 
+## Website
+https://youkimchhay.github.io/Password-Generator/
+
 Web Development Course Challenge3
