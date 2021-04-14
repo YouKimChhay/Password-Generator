@@ -50,6 +50,18 @@ header {
   height: 2px;
 }
 
+.generalInfo ul li {
+  margin-bottom: 8px;
+}
+
+.criteria form {
+  margin: 20px auto;
+}
+
+.criteria-form {
+  margin-bottom: 10px;
+}
+
 .card-body {
   min-height: 100px;
 }
@@ -74,6 +86,7 @@ header {
 
 .btn {
   border: none;
+  outline: none;
   background-color: hsl(360, 91%, 36%);
   border-radius: 25px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 6px 0px rgba(0, 0, 0, 0.2) 0px 1px 1px
@@ -99,6 +112,14 @@ button[disabled] {
 
 .float-right {
   float: right;
+}
+
+#errorMessage {
+  color: red;
+}
+
+#info {
+  color: green;
 }
 
 #password {

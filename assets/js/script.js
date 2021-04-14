@@ -171,6 +171,7 @@ function writePassword() {
     passwordText.value = password;
   } else {
     passwordText.value = "";
+    document.getElementById("info").innerHTML = "";
   }
 }
 
