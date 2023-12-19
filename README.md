@@ -11,6 +11,6 @@ To generate a password based on selected criteria:
 * JS
 
 ## Website
-https://youkimchhay.github.io/Password-Generator/
+[https://youkimchhay.github.io/password-generator/](https://youkimchhay.github.io/password-generator/)
 
 Web Development Course Challenge3
